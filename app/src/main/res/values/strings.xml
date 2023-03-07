@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Androme</string>
+    <string name="swipe_gesture">Swipe Gesture</string>
 </resources>
