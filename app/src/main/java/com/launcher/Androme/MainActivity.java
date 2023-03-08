@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     SwipeListner swipeListener;
 
-    @SuppressLint("WrongViewCast")
+//    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
         //initialize swipe listener
         swipeListener = new SwipeListner(relativeLayout);
     }
+    public static class AllAppsActivity extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_all_apps);
+            // Add your code for showing all apps here
+        }
+    }
+
     private class SwipeListner implements View.OnTouchListener{
         //create variable for gesture
         GestureDetector gestureDetector;
@@ -49,52 +59,42 @@ public class MainActivity extends AppCompatActivity {
                     //pass ture
                     return true;
                 }
+                @SuppressLint("SetTextI18n")
                 @Override
-                        public boolean onFling(MotionEvent e1,MotionEvent e2,float velocityX, float velocityY){
-                    float xDiff = e2.getX() -e1.getX();
-                    float yDiff =e1.getY() -e2.getY();
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                    float xDiff = e2.getX() - e1.getX();
+                    float yDiff = e1.getY() - e2.getY();
                     try {
-                        //catch condition
-                        if(Math.abs(xDiff)>Math.abs(yDiff)) {
-                            //when x is greater then y
-                            //check condition
-                            if (Math.abs(xDiff) > threshold && Math.abs(velocityX) > velocity_threshold) {
-                                //when x diff greater then threshold
-                                //when x velocity is greater then velocity threshold
-
-                                if (xDiff > 0) {
-                                    textView.setText("Swipe Right");
+                        if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                            // horizontal swipe, handle as before
+                        } else {
+                            // vertical swipe
+                            if (Math.abs(yDiff) > threshold && Math.abs(velocityY) > velocity_threshold) {
+                                if (yDiff > 0) {
+                                    // swipe down
+                                    textView.setText("Swipe down");git
 
                                 } else {
-                                    textView.setText("Swipe left");
+                                    // swipe up, launch AllAppsActivity
+                                    Intent intent = new Intent(MainActivity.this, AllAppsActivity.class);
+                                    startActivity(intent);
                                 }
                                 return true;
                             }
-                        }else{
-                                if(Math.abs(yDiff)> threshold && Math.abs(velocityY)>velocity_threshold){
-
-                                    if(yDiff>0){
-                                        textView.setText("Swipe Down");
-                                    }
-                                    else{
-                                        textView.setText("Swipe up");
-                                    }
-                                    return true;
-
-                                }
-                            }
-
-                    }catch (Exception e){
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     return false;
                 }
+
             };
             //Initialize gesture direction
             gestureDetector = new GestureDetector(listener);
             //set listener on view
             view.setOnTouchListener(this);
         }
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent){
             return gestureDetector.onTouchEvent(motionEvent);

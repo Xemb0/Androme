@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Androme"
         tools:targetApi="31">
         <activity
+            android:name=".AppActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
